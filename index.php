@@ -1,5 +1,44 @@
 <?php
 // показывать или нет выполненные задачи
+$category=['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
+$mustdoit=[
+    [
+        'task'=>'Собеседование в IT компании',
+        'date'=>'01.12.2019',
+        'cat'=>'Работа',
+        'done'=>'false'
+    ],
+    [
+        'task'=>'Выполнить тестовое задание',
+        'date'=>'25.12.2019',
+        'cat'=>'Работа',
+        'done'=>'false'
+    ],
+    [
+        'task'=>'Сделать задание первого раздела',
+        'date'=>'21.12.2019',
+        'cat'=>'Учеба',
+        'done'=>'true'
+    ],
+    [
+        'task'=>'Встреча с другом',
+        'date'=>'22.12.2019',
+        'cat'=>'Входящие',
+        'done'=>'false'
+    ],
+    [
+        'task'=>'Купить корм для кота',
+        'date'=>'null',
+        'cat'=>'Домашние дела',
+        'done'=>'false'
+    ],
+    [
+        'task'=>'Заказать пиццу',
+        'date'=>'null',
+        'cat'=>'Домашние дела',
+        'done'=>'false'
+    ]
+    ];
 $show_complete_tasks = rand(0, 1);
 ?>
 <!DOCTYPE html>
@@ -28,7 +67,7 @@ $show_complete_tasks = rand(0, 1);
 
                 <div class="main-header__side-item user-menu">
                     <div class="user-menu__data">
-                        <p>Константин</p>
+                        <p>Евгений</p>
 
                         <a href="#">Выйти</a>
                     </div>
@@ -42,8 +81,14 @@ $show_complete_tasks = rand(0, 1);
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Название проекта</a>
+                    <?php
+                    $index = 0;
+                    $num = count($category);
+                    while ($index < $num): ?>   
+                    <li class="main-navigation__list-item">
+                            <a class="main-navigation__list-item-link" href="#"><?=$category[$index];?></a>
+                            <?php $index++; ?>
+                            <?php endwhile; ?>
                             <span class="main-navigation__list-item-count">0</span>
                         </li>
                     </ul>
