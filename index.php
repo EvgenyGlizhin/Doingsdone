@@ -1,5 +1,14 @@
 <?php
-// показывать или нет выполненные задачи
+function count_cat ($progect_category, $progect_array){
+    $number = 0;
+    foreach ($progect_array as $array_cat){
+        if($array_cat['cat'] === $progect_category){
+            $number ++;
+        };
+    
+    }
+    return $number;
+};
 $show_complete_tasks = rand(0, 1);
 $cat = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
 $task = [
@@ -80,11 +89,11 @@ $task = [
                 <h2 class="content__side-heading">Проекты</h2>
 
                 <nav class="main-navigation">
-                <?php foreach( $cat as $item): ?>    
+                <?php foreach($cat as $item): ?>    
                 <ul class="main-navigation__list">
                         <li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="#"><?= $item ?></a>
-                            <span class="main-navigation__list-item-count">0</span>
+                            <span class="main-navigation__list-item-count"><?=count_cat($item, $task)?></span>
                         </li>
                     </ul>
                     <?php endforeach; ?>
@@ -123,9 +132,7 @@ $task = [
                     foreach ($task as $items): ?>
                  <table class="tasks">
                     <?php if($items['performed'] == true && $show_complete_tasks == 0) continue;?>   
-                    <?php if( $items ['performed'] == true): ?>
-                    <tr  class="tasks__item task task--completed"> 
-                        <?php endif;?>
+                    <?php if( $items ['performed'] == true): ?><tr  class="tasks__item task task--completed"><?php endif;?>                         
                          <td class="task__select">
                             <label class="checkbox task__checkbox">
                                  <input class="checkbox__input visually-hidden" type="checkbox">
