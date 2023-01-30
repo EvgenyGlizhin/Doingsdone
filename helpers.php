@@ -142,3 +142,12 @@ function include_template($name, array $data = []) {
 
     return $result;
 }
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+}
+function validateFilled($name) {
+    if (empty($_POST[$name])) {
+        return "Все поля должны быть заполнены";
+    }
+}
+
