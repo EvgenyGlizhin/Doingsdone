@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD' == 'POST']) {
     $form = $_POST;
     $errors = [];
 
-    $red_fields = ['email', 'password', 'name'];
-    foreach ($red_fields as $field) {
+    $requiredFields = ['email', 'password', 'name'];
+    foreach ($requiredFields as $field) {
         if (empty($form[$field])) {
             $errors[] = 'Поле не заполнено' . $field;
         }

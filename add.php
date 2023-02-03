@@ -1,7 +1,6 @@
 <?php
-include_once ('helpers.php');
-$con = mysqli_connect("127.0.0.1", "root", "", "doingsdone");
-mysqli_set_charset($con, "utf8");
+include_once('helpers.php');
+
 
 //Валидиция на заполненость и вывод ошибки
 
@@ -22,9 +21,9 @@ if (!empty($_POST)) {
 
 // Добавление файла задачи в базу если нет ошибок
 
-if(empty($errors)) {
+if (empty($errors)) {
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['file']['name'])) {
             $file_name = $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
@@ -39,20 +38,25 @@ if(empty($errors)) {
         $date = $_POST['date'];
         $status = '0';
         $user = '1';
-        $addtask = "INSERT INTO `tasks` (`status`, `title`, `dt_compleat`, `id_user`, `id_project`, `file_link`) VALUES ('$status', '$name', '$date', '$user', '$project','$file_url')";
+        $addTask = "INSERT INTO `tasks` (`status`, `title`, `dt_compleat`, `id_user`, `id_project`, `file_link`) VALUES ('$status', '$name', '$date', '$user', '$project','$file_url')";
     }
 
     // Возврат на главную если успешно
-    if (mysqli_query($con, $addtask)) {
-        header('Location:index.php');}
+
+    if (mysqli_query($connectDatabase, $addTask)) {
+        redirect('index.php');
+    }
 }
 
-if(!empty($errors)){
-$mainContent = include_template('form_add.php', [
-    'tasks' => $tasks,
-    'projects' => $projects,
-    'errors' => $errors,
+if (!empty($errors)) {
+    $mainContent = include_template('form_add.php', [
+        'tasks' => $tasks,
+        'projects' => $projects,
+        'errors' => $errors,
     ]);
 
-echo include_template('layout.php', ['name_page' => 'Ошибка заполнения', 'page_content' => $mainContent]);}
+    echo include_template('layout.php', ['name_page' => 'Ошибка заполнения', 'page_content' => $mainContent]);
+}
+
+
 

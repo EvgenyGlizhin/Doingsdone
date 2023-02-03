@@ -46,8 +46,8 @@
     <?php
     foreach ($tasks as $task): ?>
         <table class="tasks">
-            <?php if ($task['status'] == 2) continue; ?>
-            <?php if ($task ['status'] == 1): ?>
+            <?php if ($task['status'] === 2) continue; ?>
+            <?php if ($task ['status'] === 1): ?>
             <tr class="tasks__item task task--completed"><?php endif; ?>
                 <?= importantDateRed($task); ?>
                 <td class="task__select">

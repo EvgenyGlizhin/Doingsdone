@@ -13,7 +13,8 @@
  *
  * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
  */
-function is_date_valid(string $date) : bool {
+function is_date_valid(string $date): bool
+{
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
 
@@ -29,7 +30,8 @@ function is_date_valid(string $date) : bool {
  *
  * @return mysqli_stmt Подготовленное выражение
  */
-function db_get_prepare_stmt($link, $sql, $data = []) {
+function db_get_prepare_stmt($link, $sql, $data = [])
+{
     $stmt = mysqli_prepare($link, $sql);
 
     if ($stmt === false) {
@@ -46,11 +48,9 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
             if (is_int($value)) {
                 $type = 'i';
-            }
-            else if (is_string($value)) {
+            } else if (is_string($value)) {
                 $type = 's';
-            }
-            else if (is_double($value)) {
+            } else if (is_double($value)) {
                 $type = 'd';
             }
 
@@ -96,9 +96,9 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
  *
  * @return string Рассчитанная форма множественнго числа
  */
-function get_noun_plural_form (int $number, string $one, string $two, string $many): string
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
-    $number = (int) $number;
+    $number = (int)$number;
     $mod10 = $number % 10;
     $mod100 = $number % 100;
 
@@ -126,7 +126,8 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = []) {
+function include_template($name, array $data = [])
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -142,12 +143,70 @@ function include_template($name, array $data = []) {
 
     return $result;
 }
-function getPostVal($name) {
-    return $_POST[$name] ?? "";
+
+$connectDatabase = mysqli_connect("127.0.0.1", "root", "", "doingsdone");
+mysqli_set_charset($connectDatabase, "utf8");
+
+function getPostVal($name)
+{
+    return $_POST[$name] ?? '';
 }
-function validateFilled($name) {
+
+function validateFilled($name)
+{
     if (empty($_POST[$name])) {
         return "Все поля должны быть заполнены";
     }
 }
 
+function redirect($page)
+{
+    header('Location:' . $page);
+}
+
+function getProjectsForUser($userId)
+{
+    $connectDatabase = mysqli_connect("127.0.0.1", "root", "", "doingsdone");
+    mysqli_set_charset($connectDatabase, "utf8");
+    $sqlQueryProject = "SELECT id, title, user_id FROM project WHERE user_id =" . "$userId";
+    $resultQueryProject = mysqli_query($connectDatabase, $sqlQueryProject);
+    $arrayProject = mysqli_fetch_all($resultQueryProject, MYSQLI_ASSOC);
+    if (!$resultQueryProject) {
+        $error = mysqli_error($connectDatabase);
+        print("Ошибка MySQL: " . $error);
+    }
+    return ($arrayProject);
+}
+
+function getTasksFromUser($userId)
+{
+    $connectDatabase = mysqli_connect("127.0.0.1", "root", "", "doingsdone");
+    mysqli_set_charset($connectDatabase, "utf8");
+    $sqlQueryTask = "SELECT title, dt_compleat, id_project, file_link, id_user, status FROM tasks WHERE id_user =" . "$userId";
+    $resultQueryTask = mysqli_query($connectDatabase, $sqlQueryTask);
+    $arrayTask = mysqli_fetch_all($resultQueryTask, MYSQLI_ASSOC);
+    if (!$resultQueryTask) {
+        $error = mysqli_error($connectDatabase);
+        print("Ошибка MySQL: " . $error);
+    }
+    return ($arrayTask);
+}
+
+function getUserId($userId)
+{
+    $connectDatabase = mysqli_connect("127.0.0.1", "root", "", "doingsdone");
+    mysqli_set_charset($connectDatabase, "utf8");
+    $sqlQueryUsers = "SELECT id, dt_create, email, password FROM users WHERE id =" . "$userId";
+    $resultQueryUsers = mysqli_query($connectDatabase, $sqlQueryUsers);
+    $arrayUsers = mysqli_fetch_all($resultQueryUsers, MYSQLI_ASSOC);
+    foreach ($arrayUsers as $oneArray)
+    {
+        $idUser = $oneArray['id'];
+    }
+    if (!$resultQueryUsers) {
+        $error = mysqli_error($connectDatabase);
+        print("Ошибка MySQL: " . $error);
+    }
+
+    return ($idUser);
+}
